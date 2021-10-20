@@ -1,0 +1,18 @@
+transform:
+  type: environmental
+  environment:
+    - env_1
+    - env_2
+    - env_3
+    - env_4
+    - env_5
+    - env_6
+  performance: performance
+  y_column: level
+source:
+  type: local
+  files:
+    - ../../data/xdpole/example_batch_1.csv
+    - ../../data/xdpole/example_batch_2.csv
+    - ../../data/xdpole/example_batch_3.csv
+    - ../../data/xdpole/example_batch_4.csv
