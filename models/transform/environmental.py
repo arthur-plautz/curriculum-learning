@@ -21,18 +21,22 @@ class Environmental(BaseTransform):
                 raise Exception(f'Column {col} not found for environment in source data')
         self.environment = self.data[cols]
 
-    def __level_label(self, value, max_value=100):
-        if value < max_value*4/10:
+    def __level_label(self, value, min_value=0, max_value=100):
+        interval = max_value - min_value
+        value -= min_value
+        if value <= interval*0.25:
             return 'bad'
-        elif value < max_value*7/10:
+        elif value <= interval*0.5:
             return 'medium'
-        elif value < max_value*9/10:
+        elif value <= interval*0.75:
             return 'good'
         else:
             return 'top'
 
     def create_level_label(self):
-        self.level = [self.__level_label(v) for v in self.performance]
+        min_v = self.data.performance.min()
+        max_v = self.data.performance.max()
+        self.level = [self.__level_label(v, min_v, max_v) for v in self.performance]
         self.data['level'] = self.level
         return self.level
 
