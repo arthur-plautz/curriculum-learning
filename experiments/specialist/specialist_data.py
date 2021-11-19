@@ -14,7 +14,14 @@ from sklearn.model_selection import train_test_split
 manager = DataManager('../../configs/xdpole.yml')
 manager.extract()
 transformed = manager.transform()
-transformed.create_level_label()
+
+def level(value):
+    if value > 100:
+        return 'good'
+    else:
+        return 'bad'
+
+transformed.create_level_label(level_func=level)
 
 # split train/test data
 X_train, X_test, y_train, y_test = train_test_split(transformed.X, transformed.level, test_size=0.33, random_state=42)
