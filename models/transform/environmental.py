@@ -4,8 +4,13 @@ from pandas import DataFrame
 class Environmental(BaseTransform):
     def __init__(self, data:DataFrame, config:dict):
         super().__init__(data, config)
-        self.__build_performance()
-        self.__build_environment()
+
+    def reset(self):
+        if hasattr(self, 'data') and hasattr(self, 'config'):
+            self.__build_performance()
+            self.__build_environment()
+        if hasattr(self, 'level'):
+            self.create_level_label()
 
     def __build_performance(self):
         col = self.config.get('performance')
@@ -21,8 +26,9 @@ class Environmental(BaseTransform):
                 raise Exception(f'Column {col} not found for environment in source data')
         self.environment = self.data[cols]
 
-    def create_level_label(self, level_func):
-        self.level = [level_func(v) for v in self.performance]
+    def create_level_label(self, level_func=None):
+        self.__level_func = level_func if level_func else self.__level_func
+        self.level = [self.__level_func(v) for v in self.performance]
         self.data['level'] = self.level
         return self.level
 

@@ -3,20 +3,27 @@ from abc import abstractmethod
 
 class BaseTransform:
     def __init__(self, data, config):
-        self.__set_data(data)
-        self.__set_config(config)
+        self.set_config(config)
+        self.set_data(data)
 
-    def __set_config(self, config):
+    def set_config(self, config):
         if isinstance(config, dict):
             self.config = config
+            self.reset()
         else:
             raise Exception('Property config is not a dictionary')
 
-    def __set_data(self, data):
+    def set_data(self, data):
         if isinstance(data, DataFrame):
             self.data = data
+            self.reset()
         else:
             raise Exception('Property data is not a pandas DataFrame')
+
+    @abstractmethod
+    def reset(self):
+        pass
+
     @property
     @abstractmethod
     def X(self):

@@ -25,13 +25,15 @@ transformed.create_level_label(level_func=level)
 
 def get_stage(stage):
     stages = {
-        'total': transformed.data,
+        'lifetime': transformed.data,
         'birth': transformed.data.query('index < 7500'),
-        'growth': transformed.data.query('index > 7500 and index < 12000'),
-        'child': transformed.data.query('index < 10000'),
-        'first_mature': transformed.data.query('index > 12000 and index < 30000'),
-        'last_mature': transformed.data.query('index > 30000'),
+        'growth': transformed.data.query('index > 7500 and index < 15000'),
+        'young': transformed.data.query('index < 15000'),
+        'adult': transformed.data.query('index > 12000 and index < 30000'),
+        'old': transformed.data.query('index > 20000 and index < 35000'),
+        'elder': transformed.data.query('index > 30000'),
         'mature': transformed.data.query('index > 9000'),
     }
-    transformed.data = stages.get(stage)
+    data = stages.get(stage)
+    transformed.set_data(data)
     return train_test_split(transformed.X, transformed.level, test_size=0.33, random_state=42)
