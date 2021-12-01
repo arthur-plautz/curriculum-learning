@@ -16,7 +16,7 @@ manager.extract()
 transformed = manager.transform()
 
 def level(value):
-    if value > 150:
+    if value == 1000:
         return 'good'
     else:
         return 'bad'
