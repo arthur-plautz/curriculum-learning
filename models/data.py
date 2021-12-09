@@ -5,6 +5,7 @@ from models.config import Config
 class DataManager:
     def __init__(self, config_file):
         self.config = Config(config_file)
+        self.transformed = {}
 
     def extract(self):
         extract = Extract(self.config.source)
@@ -36,6 +37,4 @@ class DataManager:
         for seed in self.raw.keys():
             transformed = self.transform(seed)
             setattr(self, seed+'_transformed', transformed)
-
-    def evaluate_model(self):
-        pass
+            self.transformed[seed] = transformed

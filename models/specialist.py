@@ -36,13 +36,19 @@ class Specialist:
     def get_batch(self, lower_limit, upper_limit):
         return self.data.query(f'index > {lower_limit} and index < {upper_limit}')
 
-    def evolve_stage(self):
+    def train_model(self):
         train_data = self.get_batch(self.batch_start, self.batch_middle)
-        test_data = self.get_batch(self.batch_middle, self.batch_end)
         self.transformed.set_data(train_data)
         self.clf = self.clf.partial_fit(self.transformed.X, self.transformed.level, ['bad', 'good'])
+
+    def test_model(self):
+        test_data = self.get_batch(self.batch_middle, self.batch_end)
         self.transformed.set_data(test_data)
         return self.clf.score(self.transformed.X, self.transformed.level)
+
+    def evolve_stage(self):
+        self.train_model()
+        return self.test_model()
 
     def evolve_process(self, interval=1, min_limit=15, max_limit=40):
         results = []
