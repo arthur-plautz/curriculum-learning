@@ -63,4 +63,4 @@ class Specialist:
             results.append(int(result*100))
             stages.append(self.batch_start/10)
         df = pd.DataFrame({'stage': stages, 'score': results})
-        df.to_csv(f'./evolution/{int(self.batch_size)}/{self.seed}_score.csv')
+        df.to_csv(f'../../data/specialist/evolution/{int(self.batch_size)}_batch_{self.seed}_score.csv', index=False)

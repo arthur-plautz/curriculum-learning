@@ -20,8 +20,3 @@ manager = DataManager('../../configs/xdpole.yml')
 manager.extract()
 manager.level_function(level)
 manager.transform_all()
-
-# Bringing the Specialist
-from models.specialist import Specialist
-specialist = Specialist(manager.s10_transformed, 10)
-specialist.evolve_process(interval=0.05)
