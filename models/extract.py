@@ -6,11 +6,16 @@ class Extract:
     
     def local(self):
         sources = self.config.get('files')
-        dfs = []
+        seeds = {}
         for source in sources:
-            df = pd.read_csv(source, index_col=False)
-            dfs.append(df)
-        return pd.concat(dfs, ignore_index=True).reset_index(drop=True)
+            if isinstance(source, dict):
+                [seed] = source.keys()
+                [source_file] = source.values()
+                df = pd.read_csv(source_file, index_col=False)
+                seeds[seed] = df
+            else:
+                raise Exception('Files config must be a dict')            
+        return seeds
 
     def remote(self):
         pass

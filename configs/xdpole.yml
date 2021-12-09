@@ -12,4 +12,4 @@ transform:
 source:
   type: local
   files:
-    - ../../data/xdpole/initialconditions/s10_run.csv
+    - s10: ../../data/xdpole/initialconditions/s10_run.csv

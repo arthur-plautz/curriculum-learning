@@ -16,13 +16,26 @@ class DataManager:
         self.raw = extract_data()
         return self.raw
 
-    def transform(self):
+    def level_function(self, level_func):
+        self.__level_func = level_func
+
+    def transform(self, seed):
         models = {
             'environmental': Environmental
         }
         Transform = models[self.config.transform_type]
         self.transform = Transform(
-            self.raw,
-            self.config.transform
+            self.raw.get(seed),
+            self.config.transform,
         )
+        if self.__level_func:
+            self.transform.create_level_label(self.__level_func)
         return self.transform
+
+    def transform_all(self):
+        for seed in self.raw.keys():
+            transformed = self.transform(seed)
+            setattr(self, seed+'_transformed', transformed)
+
+    def evaluate_model(self):
+        pass
