@@ -25,13 +25,13 @@ class DataManager:
             'environmental': Environmental
         }
         Transform = models[self.config.transform_type]
-        self.transform = Transform(
+        transformed = Transform(
             self.raw.get(seed),
             self.config.transform,
         )
         if self.__level_func:
-            self.transform.create_level_label(self.__level_func)
-        return self.transform
+            transformed.create_level_label(self.__level_func)
+        return transformed
 
     def transform_all(self):
         for seed in self.raw.keys():

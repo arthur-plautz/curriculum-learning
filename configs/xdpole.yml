@@ -12,4 +12,13 @@ transform:
 source:
   type: local
   files:
+    - s1: ../../data/xdpole/initialconditions/s1_run.csv
+    - s2: ../../data/xdpole/initialconditions/s2_run.csv
+    - s3: ../../data/xdpole/initialconditions/s3_run.csv
+    - s4: ../../data/xdpole/initialconditions/s4_run.csv
+    - s5: ../../data/xdpole/initialconditions/s5_run.csv
+    - s6: ../../data/xdpole/initialconditions/s6_run.csv
+    - s7: ../../data/xdpole/initialconditions/s7_run.csv
+    - s8: ../../data/xdpole/initialconditions/s8_run.csv
+    - s9: ../../data/xdpole/initialconditions/s9_run.csv
     - s10: ../../data/xdpole/initialconditions/s10_run.csv
