@@ -16,7 +16,9 @@ def level(value):
     else:
         return 'bad'
 
-manager = DataManager('../../configs/xdpole.yml')
-manager.extract()
-manager.level_function(level)
-manager.transform_all()
+def pipeline():
+    manager = DataManager('../../configs/xdpole.yml')
+    manager.extract()
+    manager.level_function(level)
+    manager.transform_all()
+    return manager
