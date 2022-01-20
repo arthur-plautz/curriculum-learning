@@ -5,6 +5,7 @@ from pandas import DataFrame
 class Environmental(BaseTransform):
     def __init__(self, data:DataFrame, config:dict):
         super().__init__(data, config)
+        self.scaler = StandardScaler()
 
     def reset(self):
         if hasattr(self, 'data') and hasattr(self, 'config'):
@@ -35,8 +36,8 @@ class Environmental(BaseTransform):
 
     @property
     def X_normalized(self):
-        scaler = StandardScaler().fit(self.environment)
-        return scaler.transform(self.environment)
+        self.scaler.partial_fit(self.environment)
+        return self.scaler.transform(self.environment)
 
     @property
     def X(self):

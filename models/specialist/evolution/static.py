@@ -1,4 +1,6 @@
 import pandas as pd
+import warnings
+warnings.filterwarnings('ignore')
 
 class StaticEvolution:
     def __init__(self, transformed, seed, specialist_model, labels):

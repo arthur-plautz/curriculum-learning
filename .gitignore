@@ -132,4 +132,7 @@ dmypy.json
 *.sav
 
 # Data
-data/*
+data/xdpole/initialconditions/*.csv
+data/xdpole/specialist/*
+data/specialist/dynamic_evolution/*.csv
+data/specialist/static_evolution/*.csv

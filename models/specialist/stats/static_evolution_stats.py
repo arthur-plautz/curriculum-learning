@@ -1,5 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import warnings
+warnings.filterwarnings('ignore')
 
 class StaticEvolutionStats:
     def __init__(self, seeds, batch_sizes, optimized=True):
@@ -57,6 +59,9 @@ class StaticEvolutionStats:
             df = batch_df.query(f'seed == "{seed}"')
             plt.scatter(df.stage, df.score, s=1)
         plt.legend(self.seeds)
+        plt.title(f'All Seeds Specialist Score - Batch Size [{batch}]')
+        plt.xlabel('generation')
+        plt.ylabel('score')
         plt.show()
 
     def compare_batches_metric(self, metric):
@@ -65,4 +70,7 @@ class StaticEvolutionStats:
             df = self.describe_batch(batch)
             results.append(df[metric])
         plt.boxplot(results, labels=self.batch_sizes)
+        plt.title(f'All Seeds Specialist Score [{metric.capitalize()}] Values Boxplot')
+        plt.xlabel('batch size')
+        plt.ylabel(f'{metric} (score)')
         plt.show()
