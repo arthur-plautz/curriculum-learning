@@ -7,9 +7,9 @@ import pandas as pd
 class Specialist:
     def __init__(
         self,
-        expected_score=0.8,
+        expected_score=0.85,
         labels=['bad', 'good'],
-        fit_batch_size=40,
+        batch_size=20,
         start_generation=1
     ):
         self.generation = start_generation
@@ -17,8 +17,7 @@ class Specialist:
         self.target_label = None
         self.actual_score = 0
         self.expected_score = expected_score
-        self.fit_batch_size = fit_batch_size
-        self.score_batch_size = fit_batch_size - (fit_batch_size // 4)
+        self.batch_size = batch_size
         self.predict_time = None
         self.set_classifier()
         self.set_scaler()
@@ -31,12 +30,12 @@ class Specialist:
     @property
     def fit_batch_qualified(self):
         if self.fit_start:
-            return (self.generation - self.fit_start) == self.fit_batch_size
+            return (self.generation - self.fit_start) == self.batch_size
 
     @property
     def score_batch_qualified(self):
         if self.score_start:
-            return (self.generation - self.score_start) >= self.score_batch_size
+            return (self.generation - self.score_start) >= self.batch_size
 
     @property
     def params(self):
@@ -69,10 +68,8 @@ class Specialist:
         data = X + y
         self.__add_data(data)
 
-    def __transform_data(self, limit=None):
+    def __transform_data(self):
         data = pd.DataFrame(self.data)
-        if limit:
-            data = data[-(limit-1):]
         x_cols = data.columns[:-1]
         y_col = data.columns[-1]
         X = data[x_cols]
@@ -144,10 +141,12 @@ class Specialist:
         self.set_y(y)
 
         if self.score_batch_qualified:
-            X, y = self.__transform_data(limit=self.score_batch_size)
+            X, y = self.__transform_data()
             self.score(X, y)
             if not self.qualified:
                 self.__fit_counter_reset()
+            else:
+                self.__score_counter_reset()
         elif self.fit_batch_qualified:
             X, y = self.__transform_data()
             self.fit(X, y)
