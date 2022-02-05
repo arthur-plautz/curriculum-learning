@@ -1,5 +1,7 @@
 from models.stats.seed_stats import SeedStats
 import matplotlib.pyplot as plt
+import plotly.express as px
+import plotly.graph_objects as go
 
 class ContextStats:
     def __init__(self, data_dir, seeds):
@@ -19,10 +21,16 @@ class ContextStats:
 
     def fitness_evolution(self):
         for seed in self.seeds.values():
-            seed.fitness_evolution(show=False)
+            seed.fitness_evolution(show=True)
+            # print(seed)
+            # fig = go.Figure(px.line(seed, x='gen', y='performance'))
         plt.show()
 
     def fitness_evolution_boxplot(self):
         avgs = [s.run_data.avgfit for s in self.seeds.values()]
         plt.boxplot(avgs)
         plt.show()
+
+
+
+ 

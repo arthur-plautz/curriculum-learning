@@ -1,10 +1,16 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import warnings
+warnings.filterwarnings('ignore')
+#
+import plotly.graph_objects as go
+import plotly.express as px
 
-class ModelStats:
-    def __init__(self, seeds, batch_sizes):
+class StaticEvolutionStats:
+    def __init__(self, seeds, batch_sizes, optimized=True):
         self.seeds = seeds
         self.batch_sizes = batch_sizes
+        self.optimized_model = optimized
         self.init_data()
 
     def init_data(self):
@@ -12,10 +18,10 @@ class ModelStats:
         for seed in self.seeds:
             self.data[seed] = pd.DataFrame(columns=['batch', 'stage', 'score'])
 
-    def get_data(self):
+    def get_data(self, suffix='score'):
         for batch_size in self.batch_sizes:
             for seed in self.seeds:
-                df = pd.read_csv(f'../../data/specialist/evolution/{batch_size}_batch_{seed}_score.csv')
+                df = pd.read_csv(f'../../data/specialist/static_evolution/{batch_size}_bs_{seed}_{suffix}.csv')
                 df['batch'] = batch_size
                 self.data[seed] = pd.concat([self.data[seed], df])
 
@@ -56,12 +62,22 @@ class ModelStats:
             df = batch_df.query(f'seed == "{seed}"')
             plt.scatter(df.stage, df.score, s=1)
         plt.legend(self.seeds)
+        plt.title(f'All Seeds Specialist Score - Batch Size [{batch}]')
+        plt.xlabel('generation')
+        plt.ylabel('score')
         plt.show()
 
     def compare_batches_metric(self, metric):
         results = []
+        fig = go.Figure()
         for batch in self.batch_sizes:
             df = self.describe_batch(batch)
+            fig.add_trace(go.Box(y=df[metric], name=batch))
             results.append(df[metric])
         plt.boxplot(results, labels=self.batch_sizes)
+        plt.title(f'All Seeds Specialist Score [{metric.capitalize()}] Values Boxplot')
+        plt.xlabel('batch size')
+        plt.ylabel(f'{metric} (score)')
         plt.show()
+        fig.show()
+        

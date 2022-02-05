@@ -1,9 +1,11 @@
 from models.transform.base import BaseTransform
+from sklearn.preprocessing import StandardScaler
 from pandas import DataFrame
 
 class Environmental(BaseTransform):
     def __init__(self, data:DataFrame, config:dict):
         super().__init__(data, config)
+        self.scaler = StandardScaler()
 
     def reset(self):
         if hasattr(self, 'data') and hasattr(self, 'config'):
@@ -31,6 +33,11 @@ class Environmental(BaseTransform):
         self.level = [self.__level_func(v) for v in self.performance]
         self.data['level'] = self.level
         return self.level
+
+    @property
+    def X_normalized(self):
+        self.scaler.partial_fit(self.environment)
+        return self.scaler.transform(self.environment)
 
     @property
     def X(self):

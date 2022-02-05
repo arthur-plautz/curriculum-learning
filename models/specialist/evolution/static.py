@@ -1,25 +1,14 @@
-from sklearn.neural_network import MLPClassifier
-import warnings
 import pandas as pd
+import warnings
 warnings.filterwarnings('ignore')
 
-class Specialist:
-    def __init__(self, transformed, seed):
+class StaticEvolution:
+    def __init__(self, transformed, seed, specialist_model, labels):
         self.seed = seed
         self.transformed = transformed
         self.data = transformed.data.copy()
-        self.set_classifier()
-
-    def set_classifier(self):
-        self.clf = MLPClassifier(
-            hidden_layer_sizes=(64,64,64,64,64),
-            alpha=0.000001,
-            max_iter=2000,
-            activation="tanh",
-            verbose=10,
-            random_state=42,
-            tol=0.000005
-        )
+        self.clf = specialist_model
+        self.labels = labels
 
     @property
     def batch_start(self):
@@ -39,18 +28,18 @@ class Specialist:
     def train_model(self):
         train_data = self.get_batch(self.batch_start, self.batch_middle)
         self.transformed.set_data(train_data)
-        self.clf = self.clf.partial_fit(self.transformed.X, self.transformed.level, ['bad', 'good'])
+        self.clf = self.clf.partial_fit(self.transformed.X_normalized, self.transformed.level, self.labels)
 
     def test_model(self):
         test_data = self.get_batch(self.batch_middle, self.batch_end)
         self.transformed.set_data(test_data)
-        return self.clf.score(self.transformed.X, self.transformed.level)
+        return self.clf.score(self.transformed.X_normalized, self.transformed.level)
 
     def evolve_stage(self):
         self.train_model()
         return self.test_model()
 
-    def evolve_process(self, interval=1, min_limit=15, max_limit=40):
+    def evolve_process(self, interval=1, min_limit=15, max_limit=40, suffix='score'):
         results = []
         stages = []
         to_int = 1/interval
@@ -63,4 +52,4 @@ class Specialist:
             results.append(int(result*100))
             stages.append(self.batch_start/10)
         df = pd.DataFrame({'stage': stages, 'score': results})
-        df.to_csv(f'../../data/specialist/evolution/{int(self.batch_size)}_batch_{self.seed}_score.csv', index=False)
+        df.to_csv(f'../../data/specialist/static_evolution/{int(self.batch_size)}_bs_{self.seed}_{suffix}.csv', index=False)
