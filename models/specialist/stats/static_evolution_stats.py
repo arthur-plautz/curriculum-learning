@@ -60,12 +60,14 @@ class StaticEvolutionStats:
         batch_df = self.get_batch(batch)
         for seed in self.seeds:
             df = batch_df.query(f'seed == "{seed}"')
+            fig = px.scatter(df,x=df.stage, y=df.score)
             plt.scatter(df.stage, df.score, s=1)
         plt.legend(self.seeds)
         plt.title(f'All Seeds Specialist Score - Batch Size [{batch}]')
         plt.xlabel('generation')
         plt.ylabel('score')
         plt.show()
+        fig.show()
 
     def compare_batches_metric(self, metric):
         results = []

@@ -23,6 +23,7 @@ class ContextStats:
         for seed in self.seeds.values():
             seed.fitness_evolution(show=True)
             # print(seed)
+
             # fig = go.Figure(px.line(seed, x='gen', y='performance'))
         plt.show()
 
