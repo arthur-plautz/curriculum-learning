@@ -16,7 +16,7 @@ class DynamicEvolutionStats:
     def get_data(self, suffix='score'):
         for seed in self.seeds:
             df = pd.read_csv(f'../../data/specialist/dynamic_evolution/{seed}_{suffix}.csv')
-            self.data[seed] = pd.concat([self.data[seed], df]).query("generation >= 16000")
+            self.data[seed] = pd.concat([self.data[seed], df]).query("generation >= 1600")
 
     def get_seed(self, seed):
         return self.data.get(seed)

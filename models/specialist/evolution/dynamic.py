@@ -24,6 +24,7 @@ class DynamicEvolution:
             self.specialist.pre_process(self.transformed.X)
             self.specialist.post_process(self.transformed.y)
         return (
+            self.specialist.process_counter,
             self.specialist.generation,
             self.specialist.actual_score,
             bool(self.specialist.fit_start),
@@ -35,16 +36,19 @@ class DynamicEvolution:
         fits = []
         scores = []
         gens = []
+        counter = []
         stages = len(self.data)//10
         for stg in range(start//10, stages):
-            gen, result, fit_process, score_process = self.evolve_stage(stg)
+            c, gen, result, fit_process, score_process = self.evolve_stage(stg)
             gens.append(gen)
+            counter.append(c)
             results.append(int(result*100))
             fits.append(fit_process)
             scores.append(score_process)
 
         df = pd.DataFrame({
             'generation': gens,
+            'counter': counter,
             'score': results,
             'score_process': scores,
             'fit_process': fits
