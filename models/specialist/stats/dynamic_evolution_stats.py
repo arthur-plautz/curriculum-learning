@@ -4,18 +4,19 @@ import warnings
 warnings.filterwarnings('ignore')
 
 class DynamicEvolutionStats:
-    def __init__(self, seeds):
+    def __init__(self, seeds, specialist_type):
         self.seeds = seeds
+        self.specialist_type = specialist_type
         self.init_data()
 
     def init_data(self):
         self.data = {}
         for seed in self.seeds:
-            self.data[seed] = pd.DataFrame(columns=['generation', 'score', 'score_process', 'fit_process'])
+            self.data[seed] = pd.DataFrame(columns=['generation', 'score', 'cycle'])
 
     def get_data(self, suffix='score'):
         for seed in self.seeds:
-            df = pd.read_csv(f'../../data/specialist/dynamic_evolution/{seed}_{suffix}.csv')
+            df = pd.read_csv(f'../../data/specialist/dynamic_evolution/{self.specialist_type}/{seed}_{suffix}.csv')
             self.data[seed] = pd.concat([self.data[seed], df]).query("generation >= 1600")
 
     def get_seed(self, seed):
@@ -27,8 +28,8 @@ class DynamicEvolutionStats:
             df = self.get_seed(seed)
             describe.append([
                 df.score.mean(),
-                len(df.query('score_process == True')),
-                len(df.query('fit_process == True')),
+                len(df.query('cycle == "score"')),
+                len(df.query('cycle == "fit"')),
             ])
 
         return pd.DataFrame(

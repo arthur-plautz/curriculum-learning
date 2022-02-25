@@ -27,6 +27,7 @@ class Environmental(BaseTransform):
             if col not in self.data.columns:
                 raise Exception(f'Column {col} not found for environment in source data')
         self.environment = self.data[cols]
+        self.features = cols
 
     def create_level_label(self, level_func=None):
         self.__level_func = level_func if level_func else self.__level_func
@@ -36,8 +37,7 @@ class Environmental(BaseTransform):
 
     @property
     def X_normalized(self):
-        self.scaler.partial_fit(self.environment)
-        return self.scaler.transform(self.environment)
+        return self.scaler.fit_transform(self.environment)
 
     @property
     def X(self):

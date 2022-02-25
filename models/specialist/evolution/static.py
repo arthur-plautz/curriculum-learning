@@ -1,14 +1,19 @@
+import os
 import pandas as pd
 import warnings
 warnings.filterwarnings('ignore')
 
 class StaticEvolution:
-    def __init__(self, transformed, seed, specialist_model, labels):
+    def __init__(self, transformed, seed, specialist):
         self.seed = seed
         self.transformed = transformed
         self.data = transformed.data.copy()
-        self.clf = specialist_model
-        self.labels = labels
+        self.specialist = specialist
+        self.save_path = f'../../data/specialist/static_evolution/{self.specialist.type}'
+
+    def verify_dir(self):
+        if not os.path.exists(self.save_path):
+            os.mkdir(self.save_path)
 
     @property
     def batch_start(self):
@@ -28,18 +33,19 @@ class StaticEvolution:
     def train_model(self):
         train_data = self.get_batch(self.batch_start, self.batch_middle)
         self.transformed.set_data(train_data)
-        self.clf = self.clf.partial_fit(self.transformed.X_normalized, self.transformed.level, self.labels)
+        self.specialist.fit(self.transformed.X_normalized, self.transformed.y)
 
     def test_model(self):
         test_data = self.get_batch(self.batch_middle, self.batch_end)
         self.transformed.set_data(test_data)
-        return self.clf.score(self.transformed.X_normalized, self.transformed.level)
+        self.specialist.score(self.transformed.X_normalized, self.transformed.y)
+        return self.specialist.actual_score
 
     def evolve_stage(self):
         self.train_model()
         return self.test_model()
 
-    def evolve_process(self, interval=1, min_limit=15, max_limit=40, suffix='score'):
+    def evolve_process(self, interval=1, min_limit=10, max_limit=40, suffix='score'):
         results = []
         stages = []
         to_int = 1/interval
@@ -52,4 +58,4 @@ class StaticEvolution:
             results.append(int(result*100))
             stages.append(self.batch_start/10)
         df = pd.DataFrame({'stage': stages, 'score': results})
-        df.to_csv(f'../../data/specialist/static_evolution/{int(self.batch_size)}_bs_{self.seed}_{suffix}.csv', index=False)
+        df.to_csv(f'{self.save_path}/{int(self.batch_size)}_bs_{self.seed}_{suffix}.csv', index=False)

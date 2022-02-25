@@ -8,6 +8,8 @@ if module_path not in sys.path:
 
 # Transforming data
 from models.data import DataManager
+import warnings
+warnings.filterwarnings('ignore')
 
 def level(value):
     if value == 1000:

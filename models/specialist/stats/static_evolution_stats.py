@@ -4,10 +4,10 @@ import warnings
 warnings.filterwarnings('ignore')
 
 class StaticEvolutionStats:
-    def __init__(self, seeds, batch_sizes, optimized=True):
+    def __init__(self, seeds, batch_sizes, specialist_type):
         self.seeds = seeds
         self.batch_sizes = batch_sizes
-        self.optimized_model = optimized
+        self.specialist_type = specialist_type
         self.init_data()
 
     def init_data(self):
@@ -18,7 +18,7 @@ class StaticEvolutionStats:
     def get_data(self, suffix='score'):
         for batch_size in self.batch_sizes:
             for seed in self.seeds:
-                df = pd.read_csv(f'../../data/specialist/static_evolution/{batch_size}_bs_{seed}_{suffix}.csv')
+                df = pd.read_csv(f'../../data/specialist/static_evolution/{self.specialist_type}/{batch_size}_bs_{seed}_{suffix}.csv')
                 df['batch'] = batch_size
                 self.data[seed] = pd.concat([self.data[seed], df])
 

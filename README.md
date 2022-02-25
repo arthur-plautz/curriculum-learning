@@ -10,3 +10,5 @@ Then install the requirements:
 ```bash
 pip install -r requirements.txt
 ```
+
+## Version 0.1.2
