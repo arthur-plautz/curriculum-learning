@@ -10,8 +10,8 @@ class DynamicEvolution:
         self.data = transformed.data.copy()
         self.specialist = specialist
         self.specialist.predict = self.fake_predict
-        self.trials = 10
-        self.save_path = f'../../data/specialist/dynamic_evolution/{self.specialist.type}'
+        self.trials = trials
+        self.save_path = f'../../data/specialist/dynamic_evolution/{self.specialist.model.type}'
         self.verify_dir()
 
     @staticmethod

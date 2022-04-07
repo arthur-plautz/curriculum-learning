@@ -20,11 +20,13 @@ matplotlib
 matplotlib-inline
 nest-asyncio
 numpy
+nbformat>=4.2.0
 pandas
 parso
 pexpect
 pickleshare
 Pillow
+plotly
 prompt-toolkit
 ptyprocess
 Pygments

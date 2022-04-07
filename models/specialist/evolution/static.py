@@ -9,7 +9,7 @@ class StaticEvolution:
         self.transformed = transformed
         self.data = transformed.data.copy()
         self.specialist = specialist
-        self.save_path = f'../../data/specialist/static_evolution/{self.specialist.type}'
+        self.save_path = f'../../data/specialist/static_evolution/{self.specialist.model.type}'
 
     def verify_dir(self):
         if not os.path.exists(self.save_path):
