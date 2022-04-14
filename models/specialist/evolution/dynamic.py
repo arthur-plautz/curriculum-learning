@@ -19,18 +19,19 @@ class DynamicEvolution:
         return 'predicted'
 
     def get_stage_data(self, stg):
-        data = self.data.query(f'index >= {stg} and index < {stg+self.trials}')
+        data = self.data.query(f'index >= {stg*self.trials} and index < {(stg+1)*self.trials}')
         self.transformed.set_data(data)
 
     def evolve_stage(self, stg):
         if stg >= self.specialist.start_generation:
             self.get_stage_data(stg)
-            self.specialist.evaluation(self.transformed.X_normalized, self.transformed.y)
-            return (
+            self.specialist.evaluation(self.transformed.X_list, self.transformed.performance_list)
+            results = (
                 self.specialist.generation,
                 self.specialist.actual_score,
                 'fit' if self.specialist.fit_start else 'score'
             )
+            return results
 
     def verify_dir(self):
         if not os.path.exists(self.save_path):

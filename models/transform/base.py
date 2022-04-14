@@ -33,3 +33,11 @@ class BaseTransform:
     @abstractmethod
     def y(self):
         pass
+
+    @property
+    def X_list(self):
+        return self.X.values.tolist()
+
+    @property
+    def performance_list(self):
+        return self.performance.values.tolist()

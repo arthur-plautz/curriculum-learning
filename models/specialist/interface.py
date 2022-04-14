@@ -9,6 +9,7 @@ class Specialist:
         self,
         expected_score=0.7,
         fit_batch_size=20,
+        score_batch_size=20,
         start_generation=1
     ):
         self.start_generation = start_generation
@@ -17,7 +18,7 @@ class Specialist:
         self.actual_score = 0
         self.expected_score = expected_score
         self.fit_batch_size = fit_batch_size
-        self.score_batch_size = fit_batch_size - (fit_batch_size // 4)
+        self.score_batch_size = score_batch_size
         self.predict_time = None
         self.model = SpecialistModel()
         self.scaler = StandardScaler()
@@ -25,7 +26,8 @@ class Specialist:
 
     @property
     def qualified(self):
-        return self.actual_score >= self.expected_score and not self.fit_start
+        # return self.actual_score >= self.expected_score and not self.fit_start
+        return False
 
     @property
     def fit_batch_qualified(self):
@@ -55,11 +57,12 @@ class Specialist:
 
     def __save_data(self):
         data = []
-        X = self.X.tolist()
+        X = self.X
         y = self.y
         for i in range(len(X)):
             data.append(X[i] + [y[i]])
         self.__add_data(data)
+        return data
 
     def __transform_data(self, limit=None):
         data = pd.DataFrame(self.data)
@@ -72,7 +75,8 @@ class Specialist:
         return X, y
 
     def normalize_data(self, data):
-        return self.scaler.fit_transform(data)
+        self.scaler = self.scaler.partial_fit(data)
+        return self.scaler.transform(data)
 
     def set_reset_env(self, reset_env):
         if isfunction(reset_env) or ismethod(reset_env):
@@ -81,7 +85,7 @@ class Specialist:
             raise Exception('Reset env must be a function!')
 
     def set_X(self, X):
-        self.X = self.normalize_data(X)
+        self.X = X
 
     def set_y(self, y):
         self.y = y
@@ -89,11 +93,18 @@ class Specialist:
     def set_target_label(self, label):
         self.target_label = label
 
+    def get_labels(self, y):
+        return ['good' if p == 1000 else 'bad' for p in y]
+
     def score(self, X, y):
-        self.actual_score = self.model.score(X, y)
+        labels = self.get_labels(y)
+        normalized_X = self.normalize_data(X)
+        self.actual_score = self.model.score(normalized_X, labels)
 
     def fit(self, X, y):
-        self.model.fit(X, y)
+        labels = self.get_labels(y)
+        normalized_X = self.normalize_data(X)
+        self.model.fit(normalized_X, labels)
 
     def predict(self):
         if self.target_label:
@@ -126,5 +137,6 @@ class Specialist:
             self.fit(X, y)
             self.__score_counter_reset()
 
-        self.__save_data()
+        data = self.__save_data()
         self.generation += 1
+        return data
