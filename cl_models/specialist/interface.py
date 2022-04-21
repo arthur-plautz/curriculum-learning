@@ -1,7 +1,7 @@
 import time
 from inspect import isfunction, ismethod
 from sklearn.preprocessing import StandardScaler
-from models.specialist.model import SpecialistModel
+from cl_models.specialist.model import SpecialistModel
 import pandas as pd
 
 class Specialist:
