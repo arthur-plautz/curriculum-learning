@@ -1,0 +1,1 @@
+from cl_models.specialist.interface import Specialist

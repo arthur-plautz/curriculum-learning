@@ -8,7 +8,5 @@ source venv/bin/activate
 ```
 Then install the requirements:
 ```bash
-pip install -r requirements.txt
+python setup.py install
 ```
-
-## Version 0.1.2
