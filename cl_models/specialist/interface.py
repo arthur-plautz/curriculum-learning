@@ -26,8 +26,7 @@ class Specialist:
 
     @property
     def qualified(self):
-        # return self.actual_score >= self.expected_score and not self.fit_start
-        return False
+        return self.actual_score >= self.expected_score and not self.fit_start
 
     @property
     def fit_batch_qualified(self):
