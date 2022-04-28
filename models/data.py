@@ -38,3 +38,6 @@ class DataManager:
             transformed = self.transform(seed)
             setattr(self, seed+'_transformed', transformed)
             self.transformed[seed] = transformed
+
+    def set_target(self, seed):
+        self.target_data = self.transformed.get(seed)
