@@ -21,6 +21,9 @@ class BatchesGroup:
             specialist = SpecialistData(base_folder, self.seed)
             self.data[batch] = specialist
 
+    def get_batch(self, batch):
+        return self.data.get(batch)
+
     def get_mean(self, columns):
         mean_columns = {}
         data = [specialist.get_data(start=self.greater_batch_size) for specialist in self.data.values()]

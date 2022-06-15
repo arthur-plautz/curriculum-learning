@@ -5,7 +5,7 @@ from models.utils import column_group_mean
 import warnings
 warnings.filterwarnings('ignore')
 
-class BaseSpecialist:
+class BaseSpecialistExperiment:
     def __init__(self, data_folder, seeds) -> None:
         self.data_folder = data_folder
         self.target_columns = BASE_COLUMNS
@@ -16,8 +16,8 @@ class BaseSpecialist:
         self.data = {}
         for seed in self.seeds:
             base_path = f'{self.data_folder}/specialist_sp_base'
-            group = SpecialistData(base_path, seed, self.target_columns)
-            self.data[seed] = group
+            specialist_data = SpecialistData(base_path, seed, self.target_columns)
+            self.data[seed] = specialist_data
 
     @property
     def smaller_length(self):
