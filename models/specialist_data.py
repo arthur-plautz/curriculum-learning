@@ -3,7 +3,7 @@ import pathlib
 import pandas as pd
 import logging as lg
 
-MODEL_DIR = pathlib.Path(__file__).parent.resolve()
+MODEL_DIR = str(pathlib.Path(__file__).parent.resolve())
 
 class SpecialistData:
     def __init__(self, data_folder, seed):
@@ -17,7 +17,7 @@ class SpecialistData:
 
     @data_path.setter
     def data_path(self, data_path):
-        if os.path.isdir(data_path):
+        if os.path.isfile(data_path):
             self.__data_path = data_path
         else:
             raise Exception(f'Directory [{data_path}] not found.')
@@ -30,3 +30,6 @@ class SpecialistData:
         lg.info(f'Reading Specialist [{self.seed}] Data ...')
         self.data = pd.read_csv(self.data_path, index_col=False)
         lg.info(f'Finished.')
+
+    def get_data(self, start=0):
+        return self.data[start:].dropna()
