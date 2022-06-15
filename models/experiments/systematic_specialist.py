@@ -5,7 +5,7 @@ from models.utils import column_group_mean
 import warnings
 warnings.filterwarnings('ignore')
 
-class BaseSpecialistExperiment:
+class SystematicSpecialistExperiment:
     def __init__(self, data_folder, seeds) -> None:
         self.data_folder = data_folder
         self.target_columns = BASE_COLUMNS
