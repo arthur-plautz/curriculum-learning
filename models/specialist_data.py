@@ -6,8 +6,9 @@ import logging as lg
 MODEL_DIR = str(pathlib.Path(__file__).parent.resolve())
 
 class SpecialistData:
-    def __init__(self, data_folder, seed):
+    def __init__(self, data_folder, seed, target_columns=[]):
         self.seed = seed
+        self.target_columns = target_columns
         self.data_path = f'{self.__data_root}/{data_folder}/{seed}_run.csv'
         self.read_data()
 
@@ -28,8 +29,15 @@ class SpecialistData:
 
     def read_data(self):
         lg.info(f'Reading Specialist [{self.seed}] Data ...')
-        self.data = pd.read_csv(self.data_path, index_col=False)
+        data = pd.read_csv(self.data_path, index_col=False)
         lg.info(f'Finished.')
+        if self.target_columns:
+            data = data[self.target_columns]
+        self.data = data
 
-    def get_data(self, start=0):
-        return self.data[start:].dropna()
+    def get_data(self, start=0, end=None, drop_mode='any'):
+        data = self.data[start:].dropna(how=drop_mode)
+        if end:
+            return data[:end]
+        else:
+            return data

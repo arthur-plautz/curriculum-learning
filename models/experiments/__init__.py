@@ -1,0 +1,2 @@
+BASE_COLUMNS = ['gen', 'specialist_score','cm_true_positive','cm_false_positive','cm_false_negative','cm_true_negative']
+NUMERIC_COLUMNS = ['gen', 'specialist_score','prefit_evaluation','postfit_evaluation','cm_true_positive','cm_false_positive','cm_false_negative','cm_true_negative']

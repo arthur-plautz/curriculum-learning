@@ -1,5 +1,5 @@
-import numpy as np
 import pandas as pd
+from models.utils import column_group_mean
 from models.specialist_data import SpecialistData
 
 
@@ -21,17 +21,10 @@ class BatchesGroup:
             specialist = SpecialistData(base_folder, self.seed)
             self.data[batch] = specialist
 
-    def __column_group_mean(self, group):
-        if len(group) > 1:
-            m = np.mean(group, axis=0)
-            return m[~np.isnan(m)]
-        else:
-            return group[0]
-
     def get_mean(self, columns):
         mean_columns = {}
         data = [specialist.get_data(start=self.greater_batch_size) for specialist in self.data.values()]
         for column in columns:
             column_group = [df[column] for df in data]
-            mean_columns[column] = self.__column_group_mean(column_group)
+            mean_columns[column] = column_group_mean(column_group)
         return pd.DataFrame(mean_columns)
