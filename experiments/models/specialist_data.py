@@ -25,7 +25,7 @@ class SpecialistData:
 
     @property
     def __data_root(self):
-        return MODEL_DIR.replace('models', 'data')
+        return MODEL_DIR.replace('experiments/models', 'data')
 
     def read_data(self):
         lg.info(f'Reading Specialist [{self.seed}] Data ...')

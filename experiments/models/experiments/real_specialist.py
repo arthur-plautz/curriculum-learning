@@ -1,7 +1,8 @@
+from copy import deepcopy
 import pandas as pd
-from models.experiments import NUMERIC_COLUMNS
+from models.experiments import NUMERIC_COLUMNS, CM_METRICS, CM_COLUMNS
 from models.batches_group import BatchesGroup
-from models.utils import column_group_mean
+from models.utils import *
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -9,6 +10,7 @@ class RealSpecialistExperiment:
     def __init__(self, data_folder, seeds, batch_sizes) -> None:
         self.data_folder = data_folder
         self.target_columns = NUMERIC_COLUMNS
+        self.metrics = CM_METRICS
         self.seeds = seeds
         self.batch_sizes = batch_sizes
         self.load_data()
@@ -43,3 +45,15 @@ class RealSpecialistExperiment:
         for batch in self.batch_sizes:
             summary[batch] = self.get_batch_mean(batch)
         return summary
+
+    def get_stats(self, columns):
+        if len(columns) == CM_COLUMNS:
+            data = self.get_summary()
+
+            stats = {}
+            for batch in self.batch_sizes:
+                stats[batch] = process_cm_metrics(data.get(batch), columns)
+
+            return stats
+        else:
+            raise Exception('Invalid number of Confusion Matrix Columns')
