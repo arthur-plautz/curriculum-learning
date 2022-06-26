@@ -1,1 +1,3 @@
-MANAGER_FOLDER = 'xdpole/manager'
+EXPERIMENT = 'xdpole'
+INTEGRATED_MANAGER_FOLDER = f'{EXPERIMENT}/integrated_manager'
+BASE_CONDITIONS_FOLDER = f'{EXPERIMENT}/baseconditions'

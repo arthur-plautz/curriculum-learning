@@ -1,4 +1,6 @@
+import pandas as pd
 import plotly.graph_objects as go
+import seaborn as sns
 
 def add_line(fg, **kwargs):
     fg.add_trace(
@@ -33,4 +35,14 @@ def precision_recall_graph(dfs, batches, seeds=''):
 
     fg.update_xaxes(title_text='Generation')
     fg.update_yaxes(title_text='Precision/Recall')
+    fg.show()
+
+def heatmap(df, title='Title', colorscale='temps_r'):
+    fg = go.Figure(
+        layout=go.Layout(title=title)
+    )
+    fg.add_heatmap(z=df, colorscale=colorscale)
+
+    fg.update_xaxes(title_text='Generation')
+    fg.update_yaxes(title_text='Conditions')
     fg.show()
