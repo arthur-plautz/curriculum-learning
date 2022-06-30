@@ -1,6 +1,4 @@
-import pandas as pd
 import plotly.graph_objects as go
-import seaborn as sns
 
 def add_line(fg, **kwargs):
     fg.add_trace(
@@ -10,28 +8,51 @@ def add_line(fg, **kwargs):
         ),
     )
 
-def score_graph(batches, dfs, seeds=''):
+def score_group_graph(groups, dfs, seeds=''):
     fg = go.Figure(
         layout=go.Layout(title=f'Specialist Score X Generation {seeds}')
     )
 
-    for batch in batches:
-        df = dfs.get(batch)
-        add_line(fg, x=df.gen, y=df.specialist_score, name=f'Score - Batch [{batch}]')
+    for group in groups:
+        df = dfs.get(group)
+        add_line(fg, x=df.gen, y=df.specialist_score, name=f'Score - group [{group}]')
 
     fg.update_xaxes(title_text='Generation')
     fg.update_yaxes(title_text='Score')
     fg.show()
 
-def precision_recall_graph(dfs, batches, seeds=''):
+def precision_recall_group_graph(dfs, groups, seeds=''):
     fg = go.Figure(
         layout=go.Layout(title=f'Specialist Precision/Recall X Generation {seeds}')
     )
 
-    for batch in batches:
-        df = dfs.get(batch)
-        add_line(fg, x=df.gen, y=df.precision, name=f'Precision - Batch {batch}')
-        add_line(fg, x=df.gen, y=df.recall, name=f'Recall - Batch {batch}')
+    for group in groups:
+        df = dfs.get(group)
+        add_line(fg, x=df.gen, y=df.precision, name=f'Precision - group {group}')
+        add_line(fg, x=df.gen, y=df.recall, name=f'Recall - group {group}')
+
+    fg.update_xaxes(title_text='Generation')
+    fg.update_yaxes(title_text='Precision/Recall')
+    fg.show()
+
+def score_graph(df, seeds=''):
+    fg = go.Figure(
+        layout=go.Layout(title=f'Specialist Score X Generation {seeds}')
+    )
+
+    add_line(fg, x=df.gen, y=df.specialist_score, name='Score')
+
+    fg.update_xaxes(title_text='Generation')
+    fg.update_yaxes(title_text='Score')
+    fg.show()
+
+def precision_recall_graph(df, seeds=''):
+    fg = go.Figure(
+        layout=go.Layout(title=f'Specialist Precision/Recall X Generation {seeds}')
+    )
+
+    add_line(fg, x=df.gen, y=df.precision, name='Precision')
+    add_line(fg, x=df.gen, y=df.recall, name='Recall')
 
     fg.update_xaxes(title_text='Generation')
     fg.update_yaxes(title_text='Precision/Recall')
