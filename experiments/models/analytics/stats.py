@@ -25,10 +25,15 @@ class StatsAnalytics:
     def get_summary(self):
         return self.data
 
+    # @property
+    # def smaller_length(self):
+    #     return min([len(specialist.get_data()) for specialist in self.data.values()])
+
     def get_mean(self):
         mean_columns = {}
+        specialist_data = [specialist.get_data() for specialist in self.data.values()]
         for column in self.target_columns:
-            column_group = [df[column] for df in self.data.values()]
+            column_group = [specialist[column] for specialist in specialist_data]
             mean_columns[column] = column_group_mean(column_group)
         return pd.DataFrame(mean_columns)
 
