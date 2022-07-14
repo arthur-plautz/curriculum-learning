@@ -1,5 +1,5 @@
 EXPERIMENT = 'xdpole'
-INTEGRATED_MANAGER_FOLDER = f'{EXPERIMENT}/integrated_manager'
-RANDOM_MANAGER_FOLDER = f'{EXPERIMENT}/random_manager'
+INTEGRATED_MANAGER_FOLDER = f'{EXPERIMENT}/historical_manager'
+RANDOM_MANAGER_FOLDER = f'{EXPERIMENT}/generated_manager'
 BASE_CONDITIONS_FOLDER = f'{EXPERIMENT}/baseconditions'
 BASE_MANAGER_FOLDER = f'{EXPERIMENT}/base_manager'

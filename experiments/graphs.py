@@ -10,15 +10,15 @@ def add_line(fg, **kwargs):
 
 def score_group_graph(groups, dfs, seeds=''):
     fg = go.Figure(
-        layout=go.Layout(title=f'Specialist Score X Generation {seeds}')
+        layout=go.Layout(title=f'Specialist Accuracy X Generation {seeds}')
     )
 
     for group in groups:
         df = dfs.get(group)
-        add_line(fg, x=df.gen, y=df.specialist_score, name=f'Score - group [{group}]')
+        add_line(fg, x=df.gen, y=df.specialist_score, name=f'Accuracy - group [{group}]')
 
     fg.update_xaxes(title_text='Generation')
-    fg.update_yaxes(title_text='Score')
+    fg.update_yaxes(title_text='Accuracy')
     fg.show()
 
 def precision_recall_group_graph(dfs, groups, seeds=''):
@@ -37,13 +37,13 @@ def precision_recall_group_graph(dfs, groups, seeds=''):
 
 def score_graph(df, seeds=''):
     fg = go.Figure(
-        layout=go.Layout(title=f'Specialist Score X Generation {seeds}')
+        layout=go.Layout(title=f'Specialist Accuracy X Generation {seeds}')
     )
 
-    add_line(fg, x=df.gen, y=df.specialist_score, name='Score')
+    add_line(fg, x=df.gen, y=df.specialist_score, name='Accuracy')
 
     fg.update_xaxes(title_text='Generation')
-    fg.update_yaxes(title_text='Score')
+    fg.update_yaxes(title_text='Accuracy')
     fg.show()
 
 def precision_recall_graph(df, seeds=''):
