@@ -6,10 +6,11 @@ import logging as lg
 MODEL_DIR = str(pathlib.Path(__file__).parent.resolve())
 
 class CurriculumData:
-    def __init__(self, data_folder, seed, target_columns=[]):
+    def __init__(self, data_folder, seed, target_metric='run', target_columns=[]):
         self.target_columns = target_columns
+        self.target_metric = target_metric
         self.seed = seed
-        self.data_path = f'{self.__data_root}/{data_folder}/{self.seed}_run.csv'
+        self.data_path = f'{self.__data_root}/{data_folder}/{self.seed}_{self.target_metric}.csv'
         self.read_data()
 
     @property

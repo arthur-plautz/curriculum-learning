@@ -8,6 +8,19 @@ def add_line(fg, **kwargs):
         ),
     )
 
+def avgfit_graph(data, target_stats, seeds=''):
+    fg = go.Figure(
+        layout=go.Layout(title=f'AvgFit Comparision {seeds}')
+    )
+
+    for stats in target_stats:
+        df = data.get(stats)
+        add_line(fg, x=df.gen, y=df.avgfit, name=f'Avg Fit - [{stats} curriculum]')
+
+    fg.update_xaxes(title_text='Generation')
+    fg.update_yaxes(title_text='Avg Fit')
+    fg.show()
+
 def score_group_graph(groups, dfs, seeds=''):
     fg = go.Figure(
         layout=go.Layout(title=f'Specialist Accuracy X Generation {seeds}')
